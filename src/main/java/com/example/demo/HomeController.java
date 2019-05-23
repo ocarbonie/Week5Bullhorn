@@ -35,9 +35,37 @@ public class HomeController {
         model.addAttribute("message", new Message());
         return"messageform";
     }
-    @PostMapping("/add")
-    public String processMess(@ModelAttribute Message message,
-                               @RequestParam("file")MultipartFile file){
+//    @PostMapping("/add")
+//    public String processMess(@ModelAttribute Message message,
+//                               @RequestParam("file")MultipartFile file){
+//        if (file.isEmpty()){
+//            return "redirect:/add";
+//        }
+//        try{
+//            Map uploadResult = cloudc.upload(file.getBytes(),
+//                    ObjectUtils.asMap("resourcetype", "auto"));
+//            message.setPic(uploadResult.get("url").toString());
+//           messagesRepository.save(message);
+//        }catch(IOException e){
+//            e.printStackTrace();
+//            return "redirect:/add";
+//        }
+//        return "redirect:/";
+//    }
+//    @PostMapping("/processform")
+//    public String processmessageform(@Valid Message message, BindingResult result){
+//        if(result.hasErrors()){
+//            return "messageform";
+//        }
+//        messagesRepository.save(message);
+//        return "redirect:/";
+//    }
+
+    @PostMapping("/processform")
+    public String processmessageform(@ModelAttribute Message message, @Valid @RequestParam("file")MultipartFile file, BindingResult result){
+        if(result.hasErrors()){
+            return "messageform";
+        }
         if (file.isEmpty()){
             return "redirect:/add";
         }
@@ -45,17 +73,10 @@ public class HomeController {
             Map uploadResult = cloudc.upload(file.getBytes(),
                     ObjectUtils.asMap("resourcetype", "auto"));
             message.setPic(uploadResult.get("url").toString());
-           messagesRepository.save(message);
+            messagesRepository.save(message);
         }catch(IOException e){
             e.printStackTrace();
             return "redirect:/add";
-        }
-        return "redirect:/";
-    }
-    @PostMapping("/processform")
-    public String processmessageform(@Valid Message message, BindingResult result){
-        if(result.hasErrors()){
-            return "messageform";
         }
         messagesRepository.save(message);
         return "redirect:/";
