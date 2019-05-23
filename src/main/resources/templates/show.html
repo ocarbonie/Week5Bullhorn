@@ -22,11 +22,13 @@
 <table class="table table-borderless">
     <thead></thead>
     <tbody>
-    <tr th:each="post : ${message}">
-        <th scope="row"></th>
+    <tr>
+    <!--<th scope="row"></th>-->
+        <img th:src="${message.pic}"/>
         <td> <b>[[${message.title}]]</b><br />
             <i>[[${message.postedBy}]]</i> | [[${message.postedDate}]]<br />
             [[${message.content}]]<br />
+
         </td>
     </tr>
     </tbody>
